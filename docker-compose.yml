@@ -1,6 +1,22 @@
-version: '3'
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express-restserver
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      PORT: ${PORT}
+      BASE_URL: ${BASE_URL}
+      USER_DB: ${USER_DB}
+      USER_DB_PASSWORD: ${USER_DB_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+    restart: always
+  
   db:
     container_name: mysql_database
     image: mysql:oracle
@@ -8,7 +24,7 @@ services:
       # - mysql-db:/var/lib/
       - ./mysql:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=${USER_ROOT_PASSWORD_DB}
+      - MYSQL_ROOT_PASSWORD=${USER_DB_PASSWORD}
     restart: always
 
   phpMyAdmin:
